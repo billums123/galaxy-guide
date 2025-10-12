@@ -1,0 +1,117 @@
+---
+alwaysApply: true
+---
+
+# Cursor Rules for React Project
+
+## 1. Project Overview
+- **Tech stack:** React, TypeScript, Vite
+- **Primary goals:** Enforce consistent React patterns, code readability, and maintainability.
+- **Code style:** Align with ESLint, Prettier, and TypeScript configs.
+
+---
+
+## 2. Code Style Guidelines
+
+### 2.1 Imports
+- Always use absolute imports (configured via `tsconfig.json`).
+- Group imports by type:
+  1. External libraries
+  2. Internal modules
+  3. Styles and assets
+- Disallow unused imports.
+
+### 2.2 Formatting
+- Follow Prettier config for line width, trailing commas, and quotes.
+- Use single quotes, semicolons mandatory.
+- Keep JSX props under 80 characters per line.
+
+### 2.3 Naming Conventions
+- Components: `PascalCase`
+- Hooks: `useCamelCase`
+- Files: match component name (e.g., `UserCard.tsx`)
+- Constants: `UPPER_SNAKE_CASE`
+
+---
+
+## 3. React-Specific Rules
+
+### 3.1 Components
+- Prefer function components over class components.
+- Each component must have an explicit `Props` type.
+- Components should remain under 200 lines unless justified.
+
+### 3.2 State & Hooks
+- Custom hooks live in `/hooks`.
+- Avoid unnecessary re-renders; memoize expensive operations.
+- Derive state when possible—don’t duplicate props into state.
+
+### 3.3 JSX Rules
+- Each JSX element must have a single parent.
+- Prefer Tailwind CSS for styling over inline styles or CSS modules.
+- Use `aria-` attributes for accessibility.
+
+---
+
+## 4. TypeScript Rules
+
+- Always type component props and return values.
+- Prefer `interface` over `type` for component props.
+- Disallow `any`, `as unknown as`, and unsafe casts.
+- Enable strict mode in `tsconfig.json`.
+
+---
+
+## 5. File and Folder Structure
+src/
+components/
+Button/
+Button.tsx
+Button.test.tsx
+Button.module.css
+hooks/
+context/
+pages/
+utils/
+types/
+
+- Co-locate tests and styles with components.
+- Avoid deep nesting; max 3 folder levels under `src/`.
+
+---
+
+## 6. Testing Rules
+- Use React Testing Library.
+- Snapshot testing only for stable UI.
+- All components require at least one test covering rendering.
+
+---
+
+## 7. Commit & PR Rules
+- Commit messages must follow [Conventional Commits](https://www.conventionalcommits.org/).
+- PRs must pass lint, test, and type checks.
+- Include meaningful titles and summaries.
+
+---
+
+## 8. AI & Automation (Cursor)
+- Automatically suggest converting components to function components if class-based.
+- Highlight missing prop types or unhandled edge cases.
+- Warn on unused imports, props, or variables.
+- Suggest memoization for expensive computed values.
+- Enforce `useEffect` dependency completeness.
+- Recommend accessibility improvements (e.g., missing `alt` tags).
+
+---
+
+## 9. Documentation
+- Each component should include a brief JSDoc block for props.
+- `README.md` in `src/` should list shared utilities and conventions.
+- Enforce doc comments for exported functions, hooks, and components.
+
+---
+
+## 10. Linting & Tool Integration
+- ESLint: Extend `eslint-config-react-app` or similar.
+- Prettier: Run on save and pre-commit.
+- TypeScript: Enable strict mode.
