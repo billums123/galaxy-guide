@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import './App.css';
 import { usePlanets } from './hooks/usePlanets';
+import { useLocalStorage } from './hooks/useLocalStorage';
 import { calculateOrbits } from './utils/calculateOrbits';
 import { filterPlanets, extractUniqueClimates } from './utils/filterPlanets';
 import type { Planet } from './types/planet';
@@ -14,9 +15,18 @@ type ViewMode = 'list' | 'explore';
 function App() {
   const { planets, loading, error } = usePlanets();
   const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>('list');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedClimates, setSelectedClimates] = useState<string[]>([]);
+  const [viewMode, setViewMode] = useLocalStorage<ViewMode>(
+    'swapi-viewMode',
+    'list'
+  );
+  const [searchQuery, setSearchQuery] = useLocalStorage<string>(
+    'swapi-searchQuery',
+    ''
+  );
+  const [selectedClimates, setSelectedClimates] = useLocalStorage<string[]>(
+    'swapi-selectedClimates',
+    []
+  );
 
   // Extract available climates
   const availableClimates = useMemo(

@@ -2,6 +2,7 @@ import { useState, useRef, useMemo } from 'react';
 import type { Planet } from '../../types/planet';
 import type { OrbitPlanet } from '../../utils/calculateOrbits';
 import { LightSpeed } from '../LightSpeed/LightSpeed';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 interface ExploreViewProps {
   orbitingPlanets: OrbitPlanet[];
@@ -17,7 +18,7 @@ export function ExploreView({
 }: ExploreViewProps) {
   const [isLightSpeed, setIsLightSpeed] = useState(false);
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
-  const [showAllLabels, setShowAllLabels] = useState(false);
+  const [showAllLabels, setShowAllLabels] = useLocalStorage<boolean>('swapi-showAllLabels', false);
   const clickTimestamps = useRef<number[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
