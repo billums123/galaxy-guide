@@ -81,10 +81,10 @@ function App() {
       {/* Tab Navigation */}
       <nav className="sticky top-0 z-[500] border-b border-gray-800 bg-gray-950/95 backdrop-blur-sm">
         <div className="container mx-auto px-4">
-          <div className="flex gap-1">
+          <div className="flex gap-4">
             <button
               onClick={() => setViewMode('list')}
-              className={`px-6 py-4 text-sm font-semibold transition-all ${
+              className={`px-6 pt-6 pb-4 text-base font-semibold transition-all ${
                 viewMode === 'list'
                   ? 'border-b-2 border-yellow-400 text-yellow-400'
                   : 'text-gray-400 hover:text-gray-300'
@@ -94,7 +94,7 @@ function App() {
             </button>
             <button
               onClick={() => setViewMode('explore')}
-              className={`px-6 py-4 text-sm font-semibold transition-all ${
+              className={`px-6 pt-6 pb-4 text-base font-semibold transition-all ${
                 viewMode === 'explore'
                   ? 'border-b-2 border-yellow-400 text-yellow-400'
                   : 'text-gray-400 hover:text-gray-300'
