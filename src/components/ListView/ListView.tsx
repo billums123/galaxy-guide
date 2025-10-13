@@ -1,5 +1,5 @@
+import { getClimateEmoji } from '../../utils/getClimateEmoji';
 import type { Planet } from '../../types/planet';
-import { getPlanetContent } from '../../data/planetContent';
 
 interface ListViewProps {
   planets: Planet[];
@@ -36,8 +36,6 @@ export function ListView({ planets, onPlanetClick }: ListViewProps) {
         /* Planet Grid */
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {planets.map(planet => {
-            const content = getPlanetContent(planet);
-
             return (
               <button
                 key={planet.url}
@@ -45,16 +43,18 @@ export function ListView({ planets, onPlanetClick }: ListViewProps) {
                 className="group relative overflow-hidden rounded-lg border border-gray-700 bg-gray-900/50 p-6 text-left transition-all hover:border-yellow-500/50 hover:shadow-lg hover:shadow-yellow-500/10"
               >
                 {/* Planet Emoji */}
-                <div className="mb-3 text-4xl">{content.emoji}</div>
+                <div className="mb-3 text-4xl">
+                  {getClimateEmoji(planet.climate)}
+                </div>
 
                 {/* Planet Name */}
                 <h3 className="mb-2 text-xl font-bold text-yellow-400 group-hover:text-yellow-300">
                   {planet.name}
                 </h3>
 
-                {/* Tagline */}
+                {/* Quick Info */}
                 <p className="mb-3 text-sm text-gray-400 italic">
-                  {content.tagline}
+                  Click to discover this world
                 </p>
 
                 {/* Badges */}
