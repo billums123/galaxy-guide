@@ -28,3 +28,15 @@ export interface SWAPIResponse {
   results: Planet[];
 }
 
+/**
+ * View mode type for the app
+ */
+export type ViewMode = 'swipe' | 'browse';
+
+/**
+ * Extended planet data with match status
+ */
+export interface PlanetWithMatch extends Planet {
+  isMatched?: boolean;
+}
+
