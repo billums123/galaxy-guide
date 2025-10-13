@@ -58,11 +58,11 @@ export function LightSpeed({ isActive }: LightSpeedProps) {
           }
           35% {
             height: 35vmax;
-            opacity: 0.6;
+            opacity: 0.3;
           }
           43% {
             height: 45vmax;
-            opacity: 0.95;
+            opacity: 0.5;
           }
           55% {
             height: 65vmax;

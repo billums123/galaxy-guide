@@ -7,6 +7,7 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 interface ExploreViewProps {
   orbitingPlanets: OrbitPlanet[];
   onPlanetClick: (planet: Planet) => void;
+  onLightSpeedChange?: (isActive: boolean) => void;
 }
 
 /**
@@ -15,10 +16,14 @@ interface ExploreViewProps {
 export function ExploreView({
   orbitingPlanets,
   onPlanetClick,
+  onLightSpeedChange,
 }: ExploreViewProps) {
   const [isLightSpeed, setIsLightSpeed] = useState(false);
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
-  const [showAllLabels, setShowAllLabels] = useLocalStorage<boolean>('swapi-showAllLabels', false);
+  const [showAllLabels, setShowAllLabels] = useLocalStorage<boolean>(
+    'swapi-showAllLabels',
+    false
+  );
   const clickTimestamps = useRef<number[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -48,6 +53,7 @@ export function ExploreView({
     // Check if 5 clicks within 2 seconds
     if (clickTimestamps.current.length >= 5) {
       setIsLightSpeed(true);
+      onLightSpeedChange?.(true);
       clickTimestamps.current = [];
 
       // Play hyperspace sound
@@ -61,6 +67,7 @@ export function ExploreView({
       // Reset after animation (7s for audio sync)
       setTimeout(() => {
         setIsLightSpeed(false);
+        onLightSpeedChange?.(false);
       }, 7200);
     }
   };
@@ -195,8 +202,9 @@ export function ExploreView({
                           className="absolute left-1/2 -translate-x-1/2 rounded bg-gray-900/90 px-2 py-1 text-xs font-semibold whitespace-nowrap text-yellow-400 transition-opacity"
                           style={{
                             top: `${size / 2 + 8}px`,
-                            opacity:
-                              showAllLabels || hoveredPlanet === planet.url
+                            opacity: isLightSpeed
+                              ? 0
+                              : showAllLabels || hoveredPlanet === planet.url
                                 ? 1
                                 : 0,
                           }}
@@ -236,24 +244,28 @@ export function ExploreView({
       )}
 
       {/* Instructions pinned to bottom */}
-      <div className="fixed bottom-4 left-1/2 z-[60] -translate-x-1/2 text-center opacity-50">
-        <p className="rounded-full px-4 py-2 text-sm text-gray-400 backdrop-blur-sm">
-          Click on any planet to view details
-        </p>
-      </div>
+      {!isLightSpeed && (
+        <div className="fixed bottom-4 left-1/2 z-[60] -translate-x-1/2 text-center opacity-50">
+          <p className="rounded-full px-4 py-2 text-sm text-gray-400 backdrop-blur-sm">
+            Click on any planet to view details
+          </p>
+        </div>
+      )}
 
       {/* Label toggle button - bottom right */}
-      <button
-        onClick={() => setShowAllLabels(!showAllLabels)}
-        className={`fixed right-4 bottom-4 z-[60] flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all ${
-          showAllLabels
-            ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30'
-            : 'bg-gray-800/80 text-gray-300 opacity-50 hover:bg-gray-700/80 hover:text-yellow-400'
-        }`}
-        title={showAllLabels ? 'Hide planet labels' : 'Show planet labels'}
-      >
-        <span>{showAllLabels ? 'Labels On' : 'Labels Off'}</span>
-      </button>
+      {!isLightSpeed && (
+        <button
+          onClick={() => setShowAllLabels(!showAllLabels)}
+          className={`fixed right-4 bottom-4 z-[60] flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all ${
+            showAllLabels
+              ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30'
+              : 'bg-gray-800/80 text-gray-300 opacity-50 hover:bg-gray-700/80 hover:text-yellow-400'
+          }`}
+          title={showAllLabels ? 'Hide planet labels' : 'Show planet labels'}
+        >
+          <span>{showAllLabels ? 'Labels On' : 'Labels Off'}</span>
+        </button>
+      )}
     </div>
   );
 }

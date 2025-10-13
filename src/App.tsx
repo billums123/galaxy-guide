@@ -15,6 +15,7 @@ type ViewMode = 'list' | 'explore';
 function App() {
   const { planets, loading, error } = usePlanets();
   const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
+  const [isLightSpeed, setIsLightSpeed] = useState(false);
   const [viewMode, setViewMode] = useLocalStorage<ViewMode>(
     'swapi-viewMode',
     'list'
@@ -100,32 +101,34 @@ function App() {
       }`}
     >
       {/* Tab Navigation */}
-      <nav className="sticky top-0 z-[500] border-b border-gray-800 bg-gray-950/95 backdrop-blur-sm">
-        <div className="container mx-auto px-4">
-          <div className="flex gap-4">
-            <button
-              onClick={() => setViewMode('list')}
-              className={`px-4 py-1 text-base font-semibold transition-all ${
-                viewMode === 'list'
-                  ? 'border-b-2 border-yellow-400 text-yellow-400'
-                  : 'text-gray-400 hover:text-gray-300'
-              }`}
-            >
-              📋 List View
-            </button>
-            <button
-              onClick={() => setViewMode('explore')}
-              className={`px-4 py-1 text-base font-semibold transition-all ${
-                viewMode === 'explore'
-                  ? 'border-b-2 border-yellow-400 text-yellow-400'
-                  : 'text-gray-400 hover:text-gray-300'
-              }`}
-            >
-              🚀 Explore
-            </button>
+      {!isLightSpeed && (
+        <nav className="sticky top-0 z-[500] border-b border-gray-800 bg-gray-950/95 backdrop-blur-sm">
+          <div className="container mx-auto px-4">
+            <div className="flex gap-4">
+              <button
+                onClick={() => setViewMode('list')}
+                className={`px-4 py-1 text-base font-semibold transition-all ${
+                  viewMode === 'list'
+                    ? 'border-b-2 border-yellow-400 text-yellow-400'
+                    : 'text-gray-400 hover:text-gray-300'
+                }`}
+              >
+                📋 List View
+              </button>
+              <button
+                onClick={() => setViewMode('explore')}
+                className={`px-4 py-1 text-base font-semibold transition-all ${
+                  viewMode === 'explore'
+                    ? 'border-b-2 border-yellow-400 text-yellow-400'
+                    : 'text-gray-400 hover:text-gray-300'
+                }`}
+              >
+                🚀 Explore
+              </button>
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      )}
 
       {/* Main Content */}
       <main
@@ -144,6 +147,7 @@ function App() {
           <ExploreView
             orbitingPlanets={orbitingPlanets}
             onPlanetClick={handlePlanetClick}
+            onLightSpeedChange={setIsLightSpeed}
           />
         )}
       </main>
@@ -156,13 +160,15 @@ function App() {
       />
 
       {/* Floating Search Button */}
-      <FilterBar
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        selectedClimates={selectedClimates}
-        onClimateChange={setSelectedClimates}
-        availableClimates={availableClimates}
-      />
+      {!isLightSpeed && (
+        <FilterBar
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          selectedClimates={selectedClimates}
+          onClimateChange={setSelectedClimates}
+          availableClimates={availableClimates}
+        />
+      )}
     </div>
   );
 }
