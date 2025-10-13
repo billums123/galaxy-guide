@@ -3,11 +3,15 @@ import './App.css';
 import { usePlanets } from './hooks/usePlanets';
 import type { Planet } from './types/planet';
 import { ListView } from './components/ListView/ListView';
+import { ExploreView } from './components/ExploreView/ExploreView';
 import { PlanetModal } from './components/PlanetModal/PlanetModal';
+
+type ViewMode = 'list' | 'explore';
 
 function App() {
   const { planets, loading, error } = usePlanets();
   const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>('list');
 
   // Handle planet selection in browse mode
   const handlePlanetClick = (planet: Planet) => {
@@ -51,9 +55,41 @@ function App() {
 
   return (
     <div className="app min-h-screen bg-gray-950 text-white">
+      {/* Tab Navigation */}
+      <nav className="sticky top-0 z-10 border-b border-gray-800 bg-gray-950/95 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <div className="flex gap-1">
+            <button
+              onClick={() => setViewMode('list')}
+              className={`px-6 py-4 text-sm font-semibold transition-all ${
+                viewMode === 'list'
+                  ? 'border-b-2 border-yellow-400 text-yellow-400'
+                  : 'text-gray-400 hover:text-gray-300'
+              }`}
+            >
+              📋 List View
+            </button>
+            <button
+              onClick={() => setViewMode('explore')}
+              className={`px-6 py-4 text-sm font-semibold transition-all ${
+                viewMode === 'explore'
+                  ? 'border-b-2 border-yellow-400 text-yellow-400'
+                  : 'text-gray-400 hover:text-gray-300'
+              }`}
+            >
+              🚀 Explore
+            </button>
+          </div>
+        </div>
+      </nav>
+
       {/* Main Content */}
       <main className="min-h-screen overflow-y-auto">
-        <ListView planets={planets} onPlanetClick={handlePlanetClick} />
+        {viewMode === 'list' ? (
+          <ListView planets={planets} onPlanetClick={handlePlanetClick} />
+        ) : (
+          <ExploreView planets={planets} onPlanetClick={handlePlanetClick} />
+        )}
       </main>
 
       {/* Planet Detail Modal */}
