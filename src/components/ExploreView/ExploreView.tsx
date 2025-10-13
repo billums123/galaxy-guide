@@ -1,59 +1,19 @@
 import type { Planet } from '../../types/planet';
+import type { OrbitPlanet } from '../../utils/calculateOrbits';
 import { getPlanetContent } from '../../data/planetContent';
 
 interface ExploreViewProps {
-  planets: Planet[];
+  orbitingPlanets: OrbitPlanet[];
   onPlanetClick: (planet: Planet) => void;
 }
 
-interface OrbitPlanet {
-  planet: Planet;
-  orbitRadius: number;
-  startAngle: number;
-  size: number;
-  animationDuration: number;
-}
-
 /**
- * ExploreView component -  view with rotating planets randomly placed on
+ * ExploreView component - Orrery-style view with orbiting planets
  */
-export function ExploreView({ planets, onPlanetClick }: ExploreViewProps) {
-  // Assign planets to orbits randomly - recalculated each time view is rendered
-  // Define base orbit rings (in pixels from center)
-  const baseOrbitRings = [120, 180, 240, 300, 360, 420];
-
-  // Create a shuffled array of orbit indices for better distribution
-  const shuffledOrbits = planets
-    .map((_, index) => baseOrbitRings[index % baseOrbitRings.length])
-    .sort(() => Math.random() - 0.5);
-
-  const orbitingPlanets: OrbitPlanet[] = planets.map((planet, index) => {
-    // Get orbit from shuffled list and add some variance (-20 to +20px)
-    const baseOrbit = shuffledOrbits[index];
-    const orbitVariance = (Math.random() - 0.5) * 40;
-    const orbitRadius = baseOrbit + orbitVariance;
-
-    // Random starting angle (0-360 degrees)
-    const startAngle = Math.random() * 360;
-
-    // Vary planet sizes slightly
-    const size = 40 + Math.random() * 20;
-
-    // Different rotation speeds for different orbits (closer = faster)
-    // Add some randomness to speed for more natural feel
-    const baseSpeed = 20 + orbitRadius / 20;
-    const speedVariance = (Math.random() - 0.5) * 5;
-    const animationDuration = baseSpeed + speedVariance;
-
-    return {
-      planet,
-      orbitRadius,
-      startAngle,
-      size,
-      animationDuration,
-    };
-  });
-
+export function ExploreView({
+  orbitingPlanets,
+  onPlanetClick,
+}: ExploreViewProps) {
   return (
     <div className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-gray-950">
       {/* Stars background */}
@@ -75,8 +35,7 @@ export function ExploreView({ planets, onPlanetClick }: ExploreViewProps) {
       <div className="relative h-[1000px] w-[1000px]">
         {/* Central Sun */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-yellow-300 via-orange-400 to-red-500 text-6xl shadow-2xl shadow-orange-500/50">
-          </div>
+          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-yellow-300 via-orange-400 to-red-500 text-6xl shadow-2xl shadow-orange-500/50"></div>
         </div>
 
         {/* Orbit Rings (visual guides) */}

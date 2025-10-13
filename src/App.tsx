@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import './App.css';
 import { usePlanets } from './hooks/usePlanets';
+import { calculateOrbits } from './utils/calculateOrbits';
 import type { Planet } from './types/planet';
 import { ListView } from './components/ListView/ListView';
 import { ExploreView } from './components/ExploreView/ExploreView';
@@ -10,6 +11,7 @@ type ViewMode = 'list' | 'explore';
 
 function App() {
   const { planets, loading, error } = usePlanets();
+  const orbitingPlanets = useMemo(() => calculateOrbits(planets), [planets]);
   const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>('list');
 
@@ -88,7 +90,10 @@ function App() {
         {viewMode === 'list' ? (
           <ListView planets={planets} onPlanetClick={handlePlanetClick} />
         ) : (
-          <ExploreView planets={planets} onPlanetClick={handlePlanetClick} />
+          <ExploreView
+            orbitingPlanets={orbitingPlanets}
+            onPlanetClick={handlePlanetClick}
+          />
         )}
       </main>
 
