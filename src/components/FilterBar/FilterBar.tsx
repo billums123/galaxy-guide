@@ -83,7 +83,7 @@ export function FilterBar({
       {/* Large Floating Search Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`group fixed top-5 right-5 z-[95] flex h-12 w-12 items-center justify-center rounded-full shadow-2xl transition-all hover:scale-110 ${
+        className={`group fixed top-5 right-5 z-[1000] flex h-12 w-12 items-center justify-center rounded-full shadow-2xl transition-all hover:scale-110 ${
           hasActiveFilters
             ? 'bg-yellow-400 text-gray-900'
             : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
