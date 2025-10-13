@@ -91,7 +91,7 @@ function App() {
           <div className="flex gap-4">
             <button
               onClick={() => setViewMode('list')}
-              className={`px-6 pt-6 pb-4 text-base font-semibold transition-all ${
+              className={`px-4 py-1 text-base font-semibold transition-all ${
                 viewMode === 'list'
                   ? 'border-b-2 border-yellow-400 text-yellow-400'
                   : 'text-gray-400 hover:text-gray-300'
@@ -101,7 +101,7 @@ function App() {
             </button>
             <button
               onClick={() => setViewMode('explore')}
-              className={`px-6 pt-6 pb-4 text-base font-semibold transition-all ${
+              className={`px-4 py-1 text-base font-semibold transition-all ${
                 viewMode === 'explore'
                   ? 'border-b-2 border-yellow-400 text-yellow-400'
                   : 'text-gray-400 hover:text-gray-300'

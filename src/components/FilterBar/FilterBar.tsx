@@ -148,7 +148,7 @@ export function FilterBar({
             {/* Climate Filters */}
             <div>
               <div className="mb-3 flex items-center justify-between">
-                <span className="text-sm font-semibold text-gray-400">
+                <span className="py-1 text-sm font-semibold text-gray-400">
                   Filter by Climate
                 </span>
                 {selectedClimates.length > 0 && (
@@ -165,7 +165,7 @@ export function FilterBar({
                   <button
                     key={climate}
                     onClick={() => handleClimateToggle(climate)}
-                    className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                    className={`rounded-full px-2 py-1 text-sm font-medium transition-all ${
                       selectedClimates.includes(climate)
                         ? 'bg-yellow-400 text-gray-900 hover:bg-yellow-300'
                         : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
@@ -178,7 +178,7 @@ export function FilterBar({
             </div>
 
             {/* Keyboard Hint */}
-            <div className="mt-4 text-center text-xs text-gray-500">
+            <div className="mt-4 pt-4 text-center text-xs text-gray-500">
               <kbd className="rounded bg-gray-800 px-2 py-1">⌘K</kbd> or{' '}
               <kbd className="rounded bg-gray-800 px-2 py-1">/</kbd> to open •{' '}
               <kbd className="rounded bg-gray-800 px-2 py-1">ESC</kbd> to close

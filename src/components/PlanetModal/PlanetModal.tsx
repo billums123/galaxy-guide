@@ -94,7 +94,7 @@ export function PlanetModal({ planet, isOpen, onClose }: PlanetModalProps) {
           <PlanetDetail planet={planet} />
 
           {/* Actions */}
-          <div className="mt-6 flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4 pt-4">
             <button
               onClick={onClose}
               className="flex-1 rounded-lg border border-gray-600 bg-gray-800 px-6 py-3 font-semibold text-gray-300 transition-all hover:bg-gray-700"
