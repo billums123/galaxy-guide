@@ -11,6 +11,7 @@ interface UsePlanetContentReturn {
   content: PlanetContent | null;
   loading: boolean;
   error: string | null;
+  regenerate: () => Promise<void>;
 }
 
 // Fallback content for when API fails or is not configured
@@ -104,6 +105,23 @@ export function usePlanetContent(
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  const regenerate = async (): Promise<void> => {
+    if (!planet) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const generated = await generatePlanetContent(planet);
+      setContent(generated);
+      setCachedContent(planet, generated);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Failed to load planet content'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!planet) {
       setContent(null);
@@ -154,6 +172,6 @@ export function usePlanetContent(
     };
   }, [planet]); // Re-run when planet changes
 
-  return { content, loading, error };
+  return { content, loading, error, regenerate };
 }
 

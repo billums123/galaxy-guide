@@ -14,7 +14,7 @@ interface PlanetModalProps {
  * Displays SWAPI data and AI-generated travel guide
  */
 export function PlanetModal({ planet, isOpen, onClose }: PlanetModalProps) {
-  const { content, loading } = usePlanetContent(planet);
+  const { content, loading, regenerate } = usePlanetContent(planet);
 
   // Close on Escape key
   useEffect(() => {
@@ -131,6 +131,14 @@ export function PlanetModal({ planet, isOpen, onClose }: PlanetModalProps) {
 
           {/* Actions */}
           <div className="flex flex-wrap gap-4 pt-4">
+            <button
+              onClick={regenerate}
+              disabled={loading}
+              className="rounded-lg bg-yellow-500 px-6 py-3 font-semibold text-gray-900 transition-all hover:bg-yellow-400 disabled:opacity-50"
+              aria-label="Get a new AI travel guide"
+            >
+              {loading ? 'Generating…' : 'Get new guide'}
+            </button>
             <button
               onClick={onClose}
               className="flex-1 rounded-lg border border-gray-600 bg-gray-800 px-6 py-3 font-semibold text-gray-300 transition-all hover:bg-gray-700"
