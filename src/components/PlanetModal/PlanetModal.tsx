@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import type { Planet } from '../../types/planet';
-import { getPlanetContent } from '../../data/planetContent';
+import { usePlanetContent } from '../../hooks/usePlanetContent';
 import { PlanetDetail } from '../PlanetDetail/PlanetDetail';
 
 interface PlanetModalProps {
@@ -11,9 +11,11 @@ interface PlanetModalProps {
 
 /**
  * PlanetModal component - Full details modal for a planet
- * Displays SWAPI data and AI travel guide
+ * Displays SWAPI data and AI-generated travel guide
  */
 export function PlanetModal({ planet, isOpen, onClose }: PlanetModalProps) {
+  const { content, loading } = usePlanetContent(planet);
+
   // Close on Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -32,8 +34,6 @@ export function PlanetModal({ planet, isOpen, onClose }: PlanetModalProps) {
   }, [isOpen, onClose]);
 
   if (!isOpen || !planet) return null;
-
-  const content = getPlanetContent(planet);
 
   return (
     <div
@@ -76,9 +76,9 @@ export function PlanetModal({ planet, isOpen, onClose }: PlanetModalProps) {
         {/* Modal Body */}
         <div className="p-8">
           {/* Header */}
-          <div className="mb-6 flex items-start gap-4">
+          <div className="mb-6 flex items-start gap-4 pb-3">
             <span className="text-6xl" role="img" aria-label="planet emoji">
-              {content.emoji}
+              {loading ? '🌍' : content?.emoji || '🌍'}
             </span>
             <div className="flex-1">
               <h2
@@ -87,8 +87,44 @@ export function PlanetModal({ planet, isOpen, onClose }: PlanetModalProps) {
               >
                 {planet.name}
               </h2>
+              <p className="text-sm text-gray-400 italic">
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <span className="animate-pulse">✨</span>
+                    Generating travel guide...
+                  </span>
+                ) : (
+                  content?.tagline || 'Explore this galactic destination'
+                )}
+              </p>
             </div>
           </div>
+
+          {/* AI Travel Guide */}
+          {!loading && content && (
+            <div className="mb-6 rounded-lg border border-yellow-500/20 bg-yellow-500/5 p-4">
+              <div className="mb-2 flex items-center gap-2">
+                <span className="text-lg">📖</span>
+                <h3 className="font-semibold text-yellow-400">
+                  Traveler's Guide
+                </h3>
+              </div>
+              <p className="text-sm leading-relaxed text-gray-300">
+                {content.travelGuide}
+              </p>
+            </div>
+          )}
+
+          {loading && (
+            <div className="mb-6 rounded-lg border border-gray-700 bg-gray-800/30 p-4">
+              <div className="flex items-center gap-3">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-yellow-400 border-t-transparent"></div>
+                <p className="text-sm text-gray-400">
+                  Consulting the galactic archives...
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Planet Details (reusing existing component) */}
           <PlanetDetail planet={planet} />
