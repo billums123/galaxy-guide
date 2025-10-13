@@ -94,7 +94,11 @@ function App() {
   }
 
   return (
-    <div className="app min-h-screen bg-gray-950 text-white">
+    <div
+      className={`app bg-gray-950 text-white ${
+        viewMode === 'explore' ? 'h-screen overflow-hidden' : 'min-h-screen'
+      }`}
+    >
       {/* Tab Navigation */}
       <nav className="sticky top-0 z-[500] border-b border-gray-800 bg-gray-950/95 backdrop-blur-sm">
         <div className="container mx-auto px-4">
@@ -125,8 +129,10 @@ function App() {
 
       {/* Main Content */}
       <main
-        className={`min-h-screen ${
-          viewMode === 'list' ? 'overflow-y-auto' : 'overflow-hidden'
+        className={`${
+          viewMode === 'list'
+            ? 'min-h-screen overflow-y-auto'
+            : 'h-[calc(100vh-49px)] overflow-hidden'
         }`}
       >
         {viewMode === 'list' ? (

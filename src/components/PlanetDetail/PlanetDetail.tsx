@@ -38,6 +38,8 @@ export function PlanetDetail({ planet }: PlanetDetailProps) {
     { label: 'Orbital Period', value: formatDays(planet.orbital_period) },
     { label: 'Surface Water', value: formatPercent(planet.surface_water) },
     { label: 'Gravity', value: planet.gravity },
+    { label: 'Terrain', value: planet.terrain },
+    { label: 'Climate', value: planet.climate },
   ];
 
   return (
