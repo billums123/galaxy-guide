@@ -51,7 +51,7 @@ export function ExploreView({
     }
   };
   return (
-    <div className="fixed inset-0 flex items-center justify-center overflow-hidden bg-gray-950">
+    <div className="fixed inset-0 z-0 flex items-center justify-center overflow-hidden bg-gray-950">
       {/* Hidden audio element for lightspeed sound */}
       <audio ref={audioRef} src="/light-speed.mp3" preload="auto" />
 
@@ -73,9 +73,22 @@ export function ExploreView({
       {/* Light Speed Effect */}
       <LightSpeed isActive={isLightSpeed} />
 
-      {/* Orrery Container */}
-      <div className="relative z-50 h-[min(1000px,90vh)] w-[min(1000px,90vw)]">
-        {/* Central Sun */}
+      {/* No Results Message */}
+      {orbitingPlanets.length === 0 ? (
+        <div className="relative z-50 flex flex-col items-center justify-center text-center">
+          <div className="mb-4 text-6xl">🔭</div>
+          <h2 className="mb-2 text-2xl font-bold text-gray-400">
+            No planets in orbit
+          </h2>
+          <p className="text-gray-500">
+            Try adjusting your search or filters
+          </p>
+        </div>
+      ) : (
+        /* Orrery Container */
+        <div className="relative z-50 h-[min(1000px,90vh)] w-[min(1000px,90vw)]">
+
+          {/* Central Sun */}
         <div className="absolute top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2">
           <button
             onClick={handleSunClick}
@@ -146,26 +159,29 @@ export function ExploreView({
             );
           }
         )}
-      </div>
 
-      {/* Instructions */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center">
-        <p className="text-sm text-gray-400">
+          {/* Instructions - moved outside orrery container */}
+
+          {/* CSS Animation for orbiting */}
+          <style>{`
+            @keyframes orbit {
+              from {
+                transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(360deg);
+              }
+            }
+          `}</style>
+        </div>
+      )}
+
+      {/* Instructions pinned to bottom */}
+      <div className="fixed bottom-4 left-1/2 z-[60] -translate-x-1/2 text-center opacity-50">
+        <p className="rounded-full px-4 py-2 text-sm text-gray-400 backdrop-blur-sm">
           Click on any planet to view details
         </p>
       </div>
-
-      {/* CSS Animation for orbiting */}
-      <style>{`
-        @keyframes orbit {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
     </div>
   );
 }

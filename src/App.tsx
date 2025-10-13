@@ -2,18 +2,39 @@ import { useState, useMemo } from 'react';
 import './App.css';
 import { usePlanets } from './hooks/usePlanets';
 import { calculateOrbits } from './utils/calculateOrbits';
+import { filterPlanets, extractUniqueClimates } from './utils/filterPlanets';
 import type { Planet } from './types/planet';
 import { ListView } from './components/ListView/ListView';
 import { ExploreView } from './components/ExploreView/ExploreView';
 import { PlanetModal } from './components/PlanetModal/PlanetModal';
+import { FilterBar } from './components/FilterBar/FilterBar';
 
 type ViewMode = 'list' | 'explore';
 
 function App() {
   const { planets, loading, error } = usePlanets();
-  const orbitingPlanets = useMemo(() => calculateOrbits(planets), [planets]);
   const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>('list');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedClimates, setSelectedClimates] = useState<string[]>([]);
+
+  // Extract available climates
+  const availableClimates = useMemo(
+    () => extractUniqueClimates(planets),
+    [planets]
+  );
+
+  // Filter planets based on search and climate
+  const filteredPlanets = useMemo(
+    () => filterPlanets(planets, searchQuery, selectedClimates),
+    [planets, searchQuery, selectedClimates]
+  );
+
+  // Calculate orbits for filtered planets
+  const orbitingPlanets = useMemo(
+    () => calculateOrbits(filteredPlanets),
+    [filteredPlanets]
+  );
 
   // Handle planet selection in browse mode
   const handlePlanetClick = (planet: Planet) => {
@@ -92,7 +113,10 @@ function App() {
         }`}
       >
         {viewMode === 'list' ? (
-          <ListView planets={planets} onPlanetClick={handlePlanetClick} />
+          <ListView
+            planets={filteredPlanets}
+            onPlanetClick={handlePlanetClick}
+          />
         ) : (
           <ExploreView
             orbitingPlanets={orbitingPlanets}
@@ -106,6 +130,15 @@ function App() {
         planet={selectedPlanet}
         isOpen={selectedPlanet !== null}
         onClose={handleModalClose}
+      />
+
+      {/* Floating Search Button */}
+      <FilterBar
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        selectedClimates={selectedClimates}
+        onClimateChange={setSelectedClimates}
+        availableClimates={availableClimates}
       />
     </div>
   );
