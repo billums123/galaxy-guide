@@ -1,5 +1,7 @@
+import { useState, useRef } from 'react';
 import type { Planet } from '../../types/planet';
 import type { OrbitPlanet } from '../../utils/calculateOrbits';
+import { LightSpeed } from '../LightSpeed/LightSpeed';
 
 interface ExploreViewProps {
   orbitingPlanets: OrbitPlanet[];
@@ -13,8 +15,34 @@ export function ExploreView({
   orbitingPlanets,
   onPlanetClick,
 }: ExploreViewProps) {
+  const [isLightSpeed, setIsLightSpeed] = useState(false);
+  const clickTimestamps = useRef<number[]>([]);
+
+  // Handle sun clicks for easter egg
+  const handleSunClick = () => {
+    const now = Date.now();
+    
+    // Add current click timestamp
+    clickTimestamps.current.push(now);
+    
+    // Remove clicks older than 2 seconds
+    clickTimestamps.current = clickTimestamps.current.filter(
+      (timestamp) => now - timestamp <= 2000
+    );
+    
+    // Check if 5 clicks within 2 seconds
+    if (clickTimestamps.current.length >= 5) {
+      setIsLightSpeed(true);
+      clickTimestamps.current = [];
+      
+      // Reset after animation
+      setTimeout(() => {
+        setIsLightSpeed(false);
+      }, 1600);
+    }
+  };
   return (
-    <div className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-gray-950">
+    <div className="relative flex h-screen w-full items-center justify-center bg-gray-950 overflow-hidden">
       {/* Stars background */}
       <div className="absolute inset-0 opacity-30">
         {Array.from({ length: 100 }).map((_, i) => (
@@ -30,21 +58,33 @@ export function ExploreView({
         ))}
       </div>
 
+      {/* Light Speed Effect */}
+      <LightSpeed isActive={isLightSpeed} />
+
       {/* Orrery Container */}
-      <div className="relative h-[1000px] w-[1000px]">
+      <div className="relative z-50 h-[1000px] w-[1000px]">
         {/* Central Sun */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-yellow-300 via-orange-400 to-red-500 text-6xl shadow-2xl shadow-orange-500/50"></div>
+        <div className="absolute top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2">
+          <button
+            onClick={handleSunClick}
+            className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-yellow-300 via-orange-400 to-red-500 text-6xl shadow-2xl shadow-orange-500/50 transition-all"
+            style={{
+              opacity: isLightSpeed ? 0 : 1,
+              transition: 'opacity 0.3s ease-out',
+            }}
+          >
+          </button>
         </div>
 
         {/* Orbit Rings (visual guides) */}
         {[120, 180, 240, 300, 360, 420].map(radius => (
           <div
             key={radius}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-gray-800/30"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-gray-800/30 transition-opacity"
             style={{
               width: `${radius * 2}px`,
               height: `${radius * 2}px`,
+              opacity: isLightSpeed ? 0 : 1,
             }}
           />
         ))}
@@ -71,12 +111,14 @@ export function ExploreView({
               >
                 <button
                   onClick={() => onPlanetClick(planet)}
-                  className={`group absolute rounded-full transition-all hover:scale-125 ${colorClass}`}
+                  className={`group absolute rounded-full transition-opacity hover:scale-125 ${colorClass}`}
                   style={{
                     width: `${size}px`,
                     height: `${size}px`,
                     left: `${orbitRadius}px`,
                     transform: `translateY(-50%) rotate(-${startAngle}deg)`,
+                    opacity: isLightSpeed ? 0 : 1,
+                    transition: 'opacity 0.5s ease-out',
                     boxShadow: `
                       inset -${size * 0.2}px -${size * 0.2}px ${size * 0.3}px rgba(0, 0, 0, 0.5),
                       inset ${size * 0.15}px ${size * 0.15}px ${size * 0.25}px rgba(255, 255, 255, 0.15),
