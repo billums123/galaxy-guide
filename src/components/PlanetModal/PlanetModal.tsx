@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import type { Planet } from '../../types/planet';
 import { usePlanetContent } from '../../hooks/usePlanetContent';
 import { PlanetDetail } from '../PlanetDetail/PlanetDetail';
+import { getPlanetEmoji } from '../../utils/getPlanetEmoji';
 
 interface PlanetModalProps {
   planet: Planet | null;
@@ -78,7 +79,7 @@ export function PlanetModal({ planet, isOpen, onClose }: PlanetModalProps) {
           {/* Header */}
           <div className="mb-6 flex items-start gap-4 pb-3">
             <span className="text-6xl" role="img" aria-label="planet emoji">
-              {loading ? '🌍' : content?.emoji || '🌍'}
+              {content?.emoji || getPlanetEmoji(planet)}
             </span>
             <div className="flex-1">
               <h2

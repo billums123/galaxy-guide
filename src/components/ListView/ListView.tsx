@@ -1,4 +1,4 @@
-import { getClimateEmoji } from '../../utils/getClimateEmoji';
+import { getPlanetEmoji } from '../../utils/getPlanetEmoji';
 import type { Planet } from '../../types/planet';
 
 interface ListViewProps {
@@ -43,9 +43,7 @@ export function ListView({ planets, onPlanetClick }: ListViewProps) {
                 className="group relative overflow-hidden rounded-lg border border-gray-700 bg-gray-900/50 p-6 text-left transition-all hover:border-yellow-500/50 hover:shadow-lg hover:shadow-yellow-500/10"
               >
                 {/* Planet Emoji */}
-                <div className="mb-3 text-4xl">
-                  {getClimateEmoji(planet.climate)}
-                </div>
+                <div className="mb-3 text-4xl">{getPlanetEmoji(planet)}</div>
 
                 {/* Planet Name */}
                 <h3 className="mb-2 text-xl font-bold text-yellow-400 group-hover:text-yellow-300">
