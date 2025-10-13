@@ -18,7 +18,6 @@ interface PlanetContentResponse {
 
 /**
  * Vercel Serverless Function - Generate AI travel content for Star Wars planets
- * 
  */
 export default async function handler(
   req: VercelRequest,
@@ -87,7 +86,7 @@ Format your response as JSON:
 }`;
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o-nano',
+      model: 'gpt-5-nano',
       messages: [
         {
           role: 'system',
@@ -101,7 +100,7 @@ Format your response as JSON:
       ],
       response_format: { type: 'json_object' },
       temperature: 0.8,
-      max_tokens: 300,
+      max_completion_tokens: 300,
     });
 
     const content = response.choices[0]?.message?.content;
@@ -124,4 +123,3 @@ Format your response as JSON:
     });
   }
 }
-
