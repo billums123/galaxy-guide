@@ -28,3 +28,31 @@ export interface SWAPIResponse {
   results: Planet[];
 }
 
+/**
+ * Person interface for residents (from SWAPI people endpoint), may use for future features
+ */
+export interface Person {
+  name: string;
+  height: string;
+  mass: string;
+  hair_color: string;
+  skin_color: string;
+  eye_color: string;
+  birth_year: string;
+  gender: string;
+  url: string;
+}
+
+/**
+ * Film interface for films (from SWAPI films endpoint), may use for future features
+ */
+export interface Film {
+  title: string;
+  episode_id: number;
+  opening_crawl: string;
+  director: string;
+  producer: string;
+  release_date: string;
+  url: string;
+}
+
