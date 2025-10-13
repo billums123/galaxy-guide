@@ -38,7 +38,6 @@ export function PlanetDetail({ planet }: PlanetDetailProps) {
     { label: 'Orbital Period', value: formatDays(planet.orbital_period) },
     { label: 'Surface Water', value: formatPercent(planet.surface_water) },
     { label: 'Gravity', value: planet.gravity },
-    { label: 'Residents', value: planet.residents.length.toString() },
   ];
 
   return (
@@ -47,22 +46,19 @@ export function PlanetDetail({ planet }: PlanetDetailProps) {
         Planet Details
       </h3>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {detailItems.map((item) => (
+        {detailItems.map(item => (
           <div
             key={item.label}
             className="rounded-md bg-gray-800/50 p-3 transition-colors hover:bg-gray-800"
           >
-            <div className="text-xs font-medium text-gray-400">{item.label}</div>
+            <div className="text-xs font-medium text-gray-400">
+              {item.label}
+            </div>
             <div className="mt-1 text-lg font-semibold text-gray-100">
               {item.value}
             </div>
           </div>
         ))}
-      </div>
-
-      {/* Placeholder for Travel Guide - will be added if needed */}
-      <div className="mt-6 rounded-md border border-dashed border-gray-700 p-4 text-center text-gray-500">
-        <p className="text-sm">AI Travel Guide coming soon...</p>
       </div>
     </div>
   );
