@@ -17,32 +17,44 @@ export function ExploreView({
 }: ExploreViewProps) {
   const [isLightSpeed, setIsLightSpeed] = useState(false);
   const clickTimestamps = useRef<number[]>([]);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Handle sun clicks for easter egg
   const handleSunClick = () => {
     const now = Date.now();
-    
+
     // Add current click timestamp
     clickTimestamps.current.push(now);
-    
+
     // Remove clicks older than 2 seconds
     clickTimestamps.current = clickTimestamps.current.filter(
-      (timestamp) => now - timestamp <= 2000
+      timestamp => now - timestamp <= 2000
     );
-    
+
     // Check if 5 clicks within 2 seconds
     if (clickTimestamps.current.length >= 5) {
       setIsLightSpeed(true);
       clickTimestamps.current = [];
-      
-      // Reset after animation
+
+      // Play hyperspace sound
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0; // Reset to start
+        audioRef.current.play().catch(error => {
+          console.log('Audio play failed:', error);
+        });
+      }
+
+      // Reset after animation (7s for audio sync)
       setTimeout(() => {
         setIsLightSpeed(false);
-      }, 1600);
+      }, 7200);
     }
   };
   return (
-    <div className="relative flex h-screen w-full items-center justify-center bg-gray-950 overflow-hidden">
+    <div className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-gray-950">
+      {/* Hidden audio element for lightspeed sound */}
+      <audio ref={audioRef} src="/light-speed.mp3" preload="auto" />
+
       {/* Stars background */}
       <div className="absolute inset-0 opacity-30">
         {Array.from({ length: 100 }).map((_, i) => (
@@ -72,8 +84,7 @@ export function ExploreView({
               opacity: isLightSpeed ? 0 : 1,
               transition: 'opacity 0.3s ease-out',
             }}
-          >
-          </button>
+          ></button>
         </div>
 
         {/* Orbit Rings (visual guides) */}
