@@ -17,6 +17,7 @@ export function ExploreView({
 }: ExploreViewProps) {
   const [isLightSpeed, setIsLightSpeed] = useState(false);
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
+  const [showAllLabels, setShowAllLabels] = useState(false);
   const clickTimestamps = useRef<number[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -193,7 +194,10 @@ export function ExploreView({
                           className="absolute left-1/2 -translate-x-1/2 rounded bg-gray-900/90 px-2 py-1 text-xs font-semibold whitespace-nowrap text-yellow-400 transition-opacity"
                           style={{
                             top: `${size / 2 + 8}px`,
-                            opacity: hoveredPlanet === planet.url ? 1 : 0,
+                            opacity:
+                              showAllLabels || hoveredPlanet === planet.url
+                                ? 1
+                                : 0,
                           }}
                         >
                           {planet.name}
@@ -236,6 +240,19 @@ export function ExploreView({
           Click on any planet to view details
         </p>
       </div>
+
+      {/* Label toggle button - bottom right */}
+      <button
+        onClick={() => setShowAllLabels(!showAllLabels)}
+        className={`fixed right-4 bottom-4 z-[60] flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all ${
+          showAllLabels
+            ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30'
+            : 'bg-gray-800/80 text-gray-300 opacity-50 hover:bg-gray-700/80 hover:text-yellow-400'
+        }`}
+        title={showAllLabels ? 'Hide planet labels' : 'Show planet labels'}
+      >
+        <span>{showAllLabels ? 'Labels On' : 'Labels Off'}</span>
+      </button>
     </div>
   );
 }
