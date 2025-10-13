@@ -24,16 +24,23 @@ function App() {
     [planets]
   );
 
+  // Calculate orbits for ALL planets (once, never changes positions)
+  const allOrbitingPlanets = useMemo(() => calculateOrbits(planets), [planets]);
+
   // Filter planets based on search and climate
   const filteredPlanets = useMemo(
     () => filterPlanets(planets, searchQuery, selectedClimates),
     [planets, searchQuery, selectedClimates]
   );
 
-  // Calculate orbits for filtered planets
+  // Filter the orbiting planets to match the filtered planets
   const orbitingPlanets = useMemo(
-    () => calculateOrbits(filteredPlanets),
-    [filteredPlanets]
+    () =>
+      allOrbitingPlanets.filter(op =>
+        // Treating the url as a unique identifier here to match the filtered planets
+        filteredPlanets.some(fp => fp.url === op.planet.url)
+      ),
+    [allOrbitingPlanets, filteredPlanets]
   );
 
   // Handle planet selection in browse mode
