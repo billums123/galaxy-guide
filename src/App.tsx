@@ -58,7 +58,7 @@ function App() {
   return (
     <div className="app min-h-screen bg-gray-950 text-white">
       {/* Tab Navigation */}
-      <nav className="sticky top-0 z-10 border-b border-gray-800 bg-gray-950/95 backdrop-blur-sm">
+      <nav className="sticky top-0 z-[500] border-b border-gray-800 bg-gray-950/95 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="flex gap-1">
             <button
@@ -86,7 +86,11 @@ function App() {
       </nav>
 
       {/* Main Content */}
-      <main className="min-h-screen overflow-y-auto">
+      <main
+        className={`min-h-screen ${
+          viewMode === 'list' ? 'overflow-y-auto' : 'overflow-hidden'
+        }`}
+      >
         {viewMode === 'list' ? (
           <ListView planets={planets} onPlanetClick={handlePlanetClick} />
         ) : (

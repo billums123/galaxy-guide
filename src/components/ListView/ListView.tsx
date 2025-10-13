@@ -15,7 +15,7 @@ export function ListView({ planets, onPlanetClick }: ListViewProps) {
       {/* Header */}
       <div className="mb-8">
         <h1 className="mb-2 text-4xl font-bold text-yellow-400">
-          Explore Star Wars Planets
+          Galaxy Guide
         </h1>
         <p className="text-lg text-gray-400">
           {planets.length} planets to discover
@@ -24,7 +24,7 @@ export function ListView({ planets, onPlanetClick }: ListViewProps) {
 
       {/* Planet Grid */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {planets.map((planet) => {
+        {planets.map(planet => {
           const content = getPlanetContent(planet);
 
           return (
@@ -42,7 +42,7 @@ export function ListView({ planets, onPlanetClick }: ListViewProps) {
               </h3>
 
               {/* Tagline */}
-              <p className="mb-3 text-sm italic text-gray-400">
+              <p className="mb-3 text-sm text-gray-400 italic">
                 {content.tagline}
               </p>
 
@@ -55,7 +55,6 @@ export function ListView({ planets, onPlanetClick }: ListViewProps) {
                   {planet.terrain}
                 </span>
               </div>
-
             </button>
           );
         })}

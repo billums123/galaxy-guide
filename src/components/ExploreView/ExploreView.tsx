@@ -51,7 +51,7 @@ export function ExploreView({
     }
   };
   return (
-    <div className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-gray-950">
+    <div className="fixed inset-0 flex items-center justify-center overflow-hidden bg-gray-950">
       {/* Hidden audio element for lightspeed sound */}
       <audio ref={audioRef} src="/light-speed.mp3" preload="auto" />
 
@@ -74,7 +74,7 @@ export function ExploreView({
       <LightSpeed isActive={isLightSpeed} />
 
       {/* Orrery Container */}
-      <div className="relative z-50 h-[1000px] w-[1000px]">
+      <div className="relative z-50 h-[min(1000px,90vh)] w-[min(1000px,90vw)]">
         {/* Central Sun */}
         <div className="absolute top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2">
           <button
