@@ -1,6 +1,5 @@
 import type { Planet } from '../../types/planet';
 import type { OrbitPlanet } from '../../utils/calculateOrbits';
-import { getPlanetContent } from '../../data/planetContent';
 
 interface ExploreViewProps {
   orbitingPlanets: OrbitPlanet[];
@@ -52,9 +51,14 @@ export function ExploreView({
 
         {/* Orbiting Planets */}
         {orbitingPlanets.map(
-          ({ planet, orbitRadius, startAngle, size, animationDuration }) => {
-            const content = getPlanetContent(planet);
-
+          ({
+            planet,
+            orbitRadius,
+            startAngle,
+            size,
+            animationDuration,
+            colorClass,
+          }) => {
             return (
               <div
                 key={planet.url}
@@ -67,17 +71,21 @@ export function ExploreView({
               >
                 <button
                   onClick={() => onPlanetClick(planet)}
-                  className="group absolute flex items-center justify-center rounded-full bg-gray-900/80 backdrop-blur-sm transition-all hover:scale-110 hover:bg-gray-800 hover:shadow-lg hover:shadow-yellow-500/30"
+                  className={`group absolute rounded-full transition-all hover:scale-125 ${colorClass}`}
                   style={{
                     width: `${size}px`,
                     height: `${size}px`,
                     left: `${orbitRadius}px`,
                     transform: `translateY(-50%) rotate(-${startAngle}deg)`,
+                    boxShadow: `
+                      inset -${size * 0.2}px -${size * 0.2}px ${size * 0.3}px rgba(0, 0, 0, 0.5),
+                      inset ${size * 0.15}px ${size * 0.15}px ${size * 0.25}px rgba(255, 255, 255, 0.15),
+                      0 ${size * 0.15}px ${size * 0.4}px rgba(0, 0, 0, 0.4)
+                    `,
                   }}
                   title={planet.name}
                 >
-                  <span className="text-2xl">{content.emoji}</span>
-                  <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs font-semibold whitespace-nowrap text-yellow-400 opacity-0 transition-opacity group-hover:opacity-100">
+                  <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 rounded bg-gray-900/90 px-2 py-1 text-xs font-semibold whitespace-nowrap text-yellow-400 opacity-0 transition-opacity group-hover:opacity-100">
                     {planet.name}
                   </span>
                 </button>

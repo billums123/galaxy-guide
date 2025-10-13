@@ -1,4 +1,5 @@
 import type { Planet } from '../types/planet';
+import { getClimateColor } from './getClimateColor';
 
 export interface OrbitPlanet {
   planet: Planet;
@@ -6,6 +7,7 @@ export interface OrbitPlanet {
   startAngle: number;
   size: number;
   animationDuration: number;
+  colorClass: string;
 }
 
 /**
@@ -41,12 +43,16 @@ export function calculateOrbits(planets: Planet[]): OrbitPlanet[] {
     const speedVariance = (Math.random() - 0.5) * 5;
     const animationDuration = baseSpeed + speedVariance;
 
+    // Get color based on climate
+    const colorClass = getClimateColor(planet.climate);
+
     return {
       planet,
       orbitRadius,
       startAngle,
       size,
       animationDuration,
+      colorClass,
     };
   });
 }
